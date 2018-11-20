@@ -6,5 +6,10 @@
  */
 
 public class Database {
-	
+	public Database(String name) {
+		int length = name.length();
+		int index = name.indexOf(',');
+		String firstName = name.substring(0, index);
+		String lastName = name.substring(index + 2, length);
+	}
 }
