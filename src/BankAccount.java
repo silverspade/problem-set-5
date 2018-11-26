@@ -31,21 +31,23 @@ public class BankAccount {
 	
 	public int withdrawAble (double amount) {
 		if (this.balance == 0) {
-			return -1;
+			return 0;
 		} else if (amount <= 0) {
-			return 1;
+			return 0;
 		} else if (amount > this.balance) {
 			return 0;
 		}  else {
-			return 2;
+			return 1;
 		}
 	}
 	
 	public void withdraw(double amount) {
-		if(withdrawAble(amount) == 2) {
+		if(withdrawAble(amount) == 1) {
 			this.balance = balance - amount;
 		}
 	}
+	
+	//Add in a transfer method and check the constraints
 	
 	public double getBalance() {
 		return balance;

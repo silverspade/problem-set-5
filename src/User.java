@@ -14,13 +14,13 @@ public class User {
 	private String lastName;
 	private String PIN;
 	private String DOB;
-	private int phone;
+	private String phone;
 	private String street;
 	private String city;
 	private String state;
-	private int zipCode;
+	private String zipCode;
 	
-	public User(String firstName, String lastName, String PIN, String DOB, int phone, String street, String city, String state, int zipCode) {
+	public User(String firstName, String lastName, String PIN, String DOB, String phone, String street, String city, String state, String zipCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.PIN = PIN;
@@ -49,7 +49,7 @@ public class User {
 		return DOB;
 	}
 	
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 	
@@ -65,7 +65,7 @@ public class User {
 		return state;
 	}
 	
-	public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
 	
@@ -82,7 +82,7 @@ public class User {
 		}
 	}
 	
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	
@@ -98,7 +98,7 @@ public class User {
 		this.state = state;
 	}
 	
-	public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 }
