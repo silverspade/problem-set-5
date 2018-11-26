@@ -103,7 +103,8 @@ Including in this repository is a file called `accounts-db.txt`. This is a fixed
 | Account Number | 9 characters wide, consisting only of numbers (i.e., 100000001). Account numbers should be system-generated and assigned during account creation. |
 | PIN | 4 characters wide, consisting only of numbers (i.e., 1234). |
 | Balance | 15 characters wide (including the decimal point). Dollar signs should not be written to the database file. This means that maximum possible dollar amount an account can hold is $999,999,999,999.99 (i.e., less than 1 trillion). |
-| Name | 32 characters wide (formatted as Last, First). Last names are 20 characters wide, first names are 10 characters wide, and 2 characters are devoted to the comma and space between last and first names. |
+| Last Name | 20 characters wide. |
+| First Name | 15 characters wide. |
 | Date of Birth | 8 characters wide (format: YYYYMMDD). |
 | Phone Number | 10 characters wide (format: ##########). |
 | Street Address | 30 characters wide (i.e., 1776 Raritan Road). |
