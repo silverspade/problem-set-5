@@ -9,7 +9,7 @@
  */
 
 public class BankAccount {
-	private static long generatedAccountNumber = 100000001L;
+	private static long generatedAccountNumber = 100000009L;
 	private long accountNumber;
 	private double balance;
 	private User user;
