@@ -85,20 +85,36 @@ public class Database {
 		}
 	}
 	
-	public void update(Database data) {
-		int input = 0;
-		Scanner in = new Scanner(System.in);
-		System.out.println("Want to update PIN? Press 1 for yes, 2 for no");
-		input = in.nextInt();
-		if (input == 1) {
-			//setPIN from user
+	public void update(BankAccount bankAccount, Database data) throws FileNotFoundException, IOException {
+		try(BufferedReader br = new BufferedReader(new FileReader("accounts-db.txt"))) { 
+			String line;
+				while ((line = br.readLine()) != null) {
+					temp = line.substring(0, 9);
+					accountNumber = Long.valueOf(temp);
+					PIN = line.substring(9, 13);
+					temp = line.substring(13, 28);
+					balance = Double.valueOf(temp);
+					firstName = line.substring(28, 48);
+					lastName = line.substring(48, 63);
+					DOB = line.substring(63, 71);
+					phone = line.substring(71, 81);
+					street = line.substring(81, 111);
+					city = line.substring(111, 141);
+					state = line.substring(141, 143);
+					zipCode = line.substring(143, 148);
+					accountStatus = line.charAt(148);
+					//Compare the values, if something is different, then set this equal to the new one
+				}
 		}
-		System.out.println("Want to update date of birth? Press 1 for yes, 2 for no");
-		input = in.nextInt();
-		if (input == 1) {
-			System.out.println("Enter the new value: ");
-			//setDOB from user
-		}
-		in.close();
+		/*if(bankAccount.getAccountNumber() == data.accountNumber) {
+			//put something in here
+		} else {
+			System.out.println("Invalid information. Please make sure the account numbers match.");
+		}*/
+	}
+	
+	public void delete(Database data) {
+		data = null;
+		System.out.println("Database deleted.");
 	}
 }

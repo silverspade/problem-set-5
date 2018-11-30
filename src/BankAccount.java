@@ -47,7 +47,12 @@ public class BankAccount {
 		}
 	}
 	
-	//Add in a transfer method and check the constraints
+	public void transfer(BankAccount bankActOri, BankAccount bankActDest, double amount) {
+		bankActDest.setBalance(bankActDest.getBalance() + amount);
+		bankActOri.setBalance(bankActOri.getBalance() - amount);
+		System.out.println("Successfully transferred " + amount + ".");
+		//Probably not correct so look at this later
+	}
 	
 	public double getBalance() {
 		return balance;
