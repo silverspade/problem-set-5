@@ -103,7 +103,7 @@ public class Database {
 					state = line.substring(141, 143);
 					zipCode = line.substring(143, 148);
 					accountStatus = line.charAt(148);
-					//Compare the values, if something is different, then set this equal to the new one
+					//Use a BufferedWriter, Compare the values, if something is different, then set this equal to the new one
 				}
 		}
 		/*if(bankAccount.getAccountNumber() == data.accountNumber) {
