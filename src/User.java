@@ -12,7 +12,7 @@
 public class User {
 	private String firstName;
 	private String lastName;
-	private String PIN;
+	private String pin;
 	private String DOB;
 	private String phone;
 	private String street;
@@ -20,10 +20,10 @@ public class User {
 	private String state;
 	private String zipCode;
 	
-	public User(String firstName, String lastName, String PIN, String DOB, String phone, String street, String city, String state, String zipCode) {
+	public User(String firstName, String lastName, String pin, String DOB, String phone, String street, String city, String state, String zipCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.PIN = PIN;
+		this.pin = pin;
 		this.DOB = DOB;
 		this.phone = phone;
 		this.street = street;
@@ -41,8 +41,8 @@ public class User {
 		return lastName;
 	}
 	
-	public String getPIN() {
-		return PIN;
+	public String getPin() {
+		return pin;
 	}
 	
 	public String getDOB() {
@@ -70,10 +70,10 @@ public class User {
 	}
 	
 	//setters 6 have them; DOB, first, and last don't
-	public void setPIN(String oldPIN, String newPIN) {
-		if (oldPIN == getPIN()) {
-			if (newPIN.matches("\\d\\d\\d\\d")) {
-				this.PIN = newPIN;
+	public void setPIN(String oldPin, String newPin) {
+		if (oldPin == getPin()) {
+			if (newPin.matches("\\d\\d\\d\\d")) {
+				this.pin = newPin;
 			} else {
 				System.out.println("PIN change unsuccessful. Enter a valid newPIN.");
 			}

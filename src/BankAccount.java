@@ -9,15 +9,21 @@
  */
 
 public class BankAccount {
-	private static long generatedAccountNumber = 100000009L;
+	
 	private long accountNumber;
 	private double balance;
 	private User user;
+	private char accountStatus;
 	
-	public BankAccount(User user, double balance) {
-		this.balance = balance;
-		this.accountNumber = BankAccount.generatedAccountNumber++;
-		this.user = user;
+	private String temp;
+	
+	public BankAccount(String line) {
+		temp = line.substring(0, 9);
+		this.accountNumber = Long.valueOf(temp);
+		temp = line.substring(13, 28);
+		this.balance = Double.valueOf(temp);
+		this.user = new User(line.substring(28, 48), line.substring(48, 63), line.substring(9, 13), line.substring(63, 71), line.substring(71, 81), line.substring(81, 111), line.substring(111, 141), line.substring(141, 143), line.substring(143, 148));
+		this.accountStatus = line.charAt(148);
 	}
 	
 	public int deposit (double amount) {
@@ -48,10 +54,20 @@ public class BankAccount {
 	}
 	
 	public void transfer(BankAccount bankActOri, BankAccount bankActDest, double amount) {
-		bankActDest.setBalance(bankActDest.getBalance() + amount);
+		if (bankActOri.getAccountNumber() != null) {
+			//code
+		}
+		/*bankActDest.setBalance(bankActDest.getBalance() + amount);
 		bankActOri.setBalance(bankActOri.getBalance() - amount);
 		System.out.println("Successfully transferred " + amount + ".");
-		//Probably not correct so look at this later
+		Probably not correct so look at this later*/
+		//Add in updateAccount and bankActOri and bankActDest so that both of them can updated.
+		//Can use updateAccount with only one account 
+	}
+	
+	public String toString() {
+		String result = String.valueOf(accountNumber) + user.getPin() + String.format("%1$-" + 15 + "s", String.valueOf(balance)) + String.format("%1$-" + 20 + "s", user.getLastName()) + String.format("%1$-" + 15 + "s", user.getFirstName()) + user.getDOB() + user.getPhone() + String.format("%1$-" + 30 + "s", user.getStreet()) + String.format("%1$-" + 30 + "s", user.getCity()) + user.getState() + accountStatus;
+		return result;
 	}
 	
 	public double getBalance() {

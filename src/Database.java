@@ -1,8 +1,15 @@
+//Adapted from Mr. Wilson's Database
+// and this.accountNumber = BankAccount.generatedAccountNumber++;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * This class will serve as the intermediary between our ATM program and
@@ -12,109 +19,119 @@ import java.util.Scanner;
  */
 
 public class Database {
-	private long accountNumber;
-	private String PIN;
-	private double balance;
-	private String lastName;
-	private String firstName;
-	private String DOB;
-	private String phone;
-	private String street;
-	private String city;
-	private String state;
-	private String zipCode;
-	private char accountStatus;
 	
-	private Database result;
-	private String temp;
+	private String path;
+	private String[] accounts;
+	private static long generatedAccountNumber = 100000009L;
 	
-	public Database(BankAccount bankAccount, char accountStatus) {
-		this.accountNumber = bankAccount.getAccountNumber();
-		this.PIN = bankAccount.getUser().getPIN();
-		this.balance = bankAccount.getBalance();
-		this.lastName = bankAccount.getUser().getLastName();
-		this.firstName = bankAccount.getUser().getFirstName();
-		this.DOB = bankAccount.getUser().getDOB();
-		this.phone = bankAccount.getUser().getPhone();
-		this.street = bankAccount.getUser().getStreet();
-		this.city = bankAccount.getUser().getCity();
-		this.state = bankAccount.getUser().getState();
-		this.zipCode = bankAccount.getUser().getZipCode();
-		this.accountStatus = accountStatus;
+	public Database(String path) throws FileNotFoundException, IOException {
+		this.path = path;
+		this.accounts = getAllAccounts();
 	}
 	
-	public Database autoCreate() throws FileNotFoundException, IOException {
-		try(BufferedReader br = new BufferedReader(new FileReader("accounts-db.txt"))) { 
+	/**
+	 * Initializes the database with all accounts.
+	 * 
+	 * @return an array of all accounts
+	 */
+	
+	public String[] getAllAccounts() throws FileNotFoundException, IOException {
+		int count = 0;
+		String[] accounts = new String[10];
+		
+		FileReader altered = null;
+		InputStreamReader original = null;
+		try {
+			altered = new FileReader(System.getProperty("user.dir") + File.separator + path);			
+		} catch (FileNotFoundException e) {
+			original = new InputStreamReader(getClass().getResourceAsStream(path));
+		}
+		
+		try (BufferedReader br = new BufferedReader(original != null ? original : altered)) {
 			String line;
-				while ((line = br.readLine()) != null) {
-					temp = line.substring(0, 9);
-					accountNumber = Long.valueOf(temp);
-					PIN = line.substring(9, 13);
-					temp = line.substring(13, 28);
-					balance = Double.valueOf(temp);
-					firstName = line.substring(28, 48);
-					lastName = line.substring(48, 63);
-					DOB = line.substring(63, 71);
-					phone = line.substring(71, 81);
-					street = line.substring(81, 111);
-					city = line.substring(111, 141);
-					state = line.substring(141, 143);
-					zipCode = line.substring(143, 148);
-					accountStatus = line.charAt(148);
-					result = new Database(new BankAccount(new User(firstName, lastName, PIN, DOB, phone, street, city, state, zipCode), balance), accountStatus);
+			
+			while ((line = br.readLine()) != null) {
+				if (count >= accounts.length) {
+					accounts = Arrays.copyOf(accounts, accounts.length + 10);
 				}
-				return result;
+				accounts[count++] = line;
+			}
 		}
+		
+		return Arrays.copyOf(accounts, count);
 	}
 	
-	public void retrieve(Database data) {
-		if(data.accountStatus == 'Y') {
-			System.out.println(data.accountNumber);
-			System.out.println(data.PIN);
-			System.out.println(data.balance);
-			System.out.println(data.lastName);
-			System.out.println(data.firstName);
-			System.out.println(data.DOB);
-			System.out.println(data.phone);
-			System.out.println(data.street);
-			System.out.println(data.city);
-			System.out.println(data.state);
-			System.out.println(data.zipCode);
-		} else {
-			System.out.println("Account is closed. Cannot retrieve information.");
+	/**
+	 * Retrieves an account by account number.
+	 * 
+	 * @param accountNumber the account number of the account to retrieve
+	 * @return a BankAccount
+	 */
+	
+	public BankAccount getAccount(long accountNumber) {
+		for (String account : accounts) {
+			if (account.startsWith(String.valueOf(accountNumber)) && account.endsWith("Y")) {
+				return new BankAccount(account);
+			}
 		}
+		
+		return null;
 	}
 	
-	public void update(BankAccount bankAccount, Database data) throws FileNotFoundException, IOException {
-		try(BufferedReader br = new BufferedReader(new FileReader("accounts-db.txt"))) { 
-			String line;
-				while ((line = br.readLine()) != null) {
-					temp = line.substring(0, 9);
-					accountNumber = Long.valueOf(temp);
-					PIN = line.substring(9, 13);
-					temp = line.substring(13, 28);
-					balance = Double.valueOf(temp);
-					firstName = line.substring(28, 48);
-					lastName = line.substring(48, 63);
-					DOB = line.substring(63, 71);
-					phone = line.substring(71, 81);
-					street = line.substring(81, 111);
-					city = line.substring(111, 141);
-					state = line.substring(141, 143);
-					zipCode = line.substring(143, 148);
-					accountStatus = line.charAt(148);
-					//Use a BufferedWriter, Compare the values, if something is different, then set this equal to the new one
+	/**
+	 * Updates a BankAccount.
+	 * 
+	 * @param account the primary account being updated
+	 * @param destination the secondary account being updated
+	 * @throws IOException 
+	 */
+	
+	public void updateAccount(BankAccount account, BankAccount destination) throws IOException {
+		boolean newAccount = true;
+		
+		for (int i = 0; i < accounts.length; i++) {			
+			if (accounts[i].startsWith(String.valueOf(account.getAccountNumber()))) {
+				accounts[i] = account.toString();
+				newAccount = false;
+			}
+			
+			if (destination != null) {
+				if (accounts[i].startsWith(String.valueOf(destination.getAccountNumber()))) {
+					accounts[i] = destination.toString();
 				}
+			}
 		}
-		/*if(bankAccount.getAccountNumber() == data.accountNumber) {
-			//put something in here
-		} else {
-			System.out.println("Invalid information. Please make sure the account numbers match.");
-		}*/
+		
+		if (newAccount) {
+			accounts = Arrays.copyOf(accounts, accounts.length + 1);
+			accounts[accounts.length - 1] = account.toString();
+		}
+		
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + File.separator + path))) {
+			for (String acct : accounts) {
+				bw.write(acct);
+				bw.newLine();
+			}
+		}
 	}
 	
-	public void delete(Database data) {
-		data = null;
-		System.out.println("Database deleted.");
+	/**
+	 * Retrieves the largest account number in the database.
+	 * 
+	 * @return the largest account number
+	 */
+	
+	public long getMaxAccountNumber() {
+		long max = -1L;
+		
+		for (String account : accounts) {
+			long accountNumber = Long.parseLong(account.substring(0, 9));
+			
+			if (accountNumber > max) {
+				max = accountNumber;
+			}
+		}
+		
+		return max;
 	}
 }
