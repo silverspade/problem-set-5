@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * Just like last time, the BankAccount class is primarily responsible
  * for depositing and withdrawing money. In the enhanced version, there
@@ -14,6 +16,7 @@ public class BankAccount {
 	private double balance;
 	private User user;
 	private char accountStatus;
+	private static long generatedAccountNumber = 100000009L;
 	
 	private String temp;
 	
@@ -53,20 +56,60 @@ public class BankAccount {
 		}
 	}
 	
-	public void transfer(BankAccount bankActOri, BankAccount bankActDest, double amount) {
-		if (bankActOri.getAccountNumber() != null) {
-			//code
+	public void transfer(BankAccount bankActDest, double amount) {
+		if ((Long) bankActDest.accountNumber == null) {
+			
+		} else (bankActDest.accountNumber < Database.getMaxAccountNumber()) {
+			
 		}
-		/*bankActDest.setBalance(bankActDest.getBalance() + amount);
-		bankActOri.setBalance(bankActOri.getBalance() - amount);
-		System.out.println("Successfully transferred " + amount + ".");
-		Probably not correct so look at this later*/
+				 
+		bankActDest.setBalance(bankActDest.balance + amount);
+		this.balance = balance - amount;
 		//Add in updateAccount and bankActOri and bankActDest so that both of them can updated.
 		//Can use updateAccount with only one account 
 	}
 	
+	public BankAccount createAccount() {
+		Scanner in = new Scanner(System.in);
+		accountNumber = generatedAccountNumber++;
+		balance = 0.00;
+		System.out.println("Enter your first name:");
+		String firstName = in.nextLine();
+		System.out.println("Enter your last name: ");
+		String lastName = in.nextLine();
+		System.out.println("Enter your PIN: ");
+		String pin = in.nextLine();
+		while (pin.length() > 4) {
+			System.out.println("Invalid. Enter a valid PIN: ");
+			pin = in.nextLine();
+		}
+		System.out.println("Enter your date of birth as YYYYMMDD");
+		String dob = in.nextLine();
+		while (Long.valueOf(dob.substring(4, 5)) > 12 || dob.length() != 8 || Long.valueOf(dob.substring(6, 7)) > 31) {
+			System.out.println("Invalid. Enter a valid date of birth as YYYYMMDD");
+			dob = in.nextLine();
+		}
+		System.out.println("Enter your phone number: ");
+		String phone = in.nextLine();
+		while (pin.length() > 10) {
+			System.out.println("Invalid. Enter a valid phone number: ");
+			phone = in.nextLine();
+		}
+		System.out.println("Enter your street address: ");
+		String street = in.nextLine();
+		System.out.println("Enter your city: ");
+		String city = in.nextLine();
+		System.out.println("Enter your state: ");
+		String state = in.nextLine();
+		System.out.println("Enter your zip code: ");
+		String zipCode = in.nextLine();
+		//Get this into a BankAccount
+		//String line = toString()
+		//BankAccount result = new BankAccount()
+	}
+	
 	public String toString() {
-		String result = String.valueOf(accountNumber) + user.getPin() + String.format("%1$-" + 15 + "s", String.valueOf(balance)) + String.format("%1$-" + 20 + "s", user.getLastName()) + String.format("%1$-" + 15 + "s", user.getFirstName()) + user.getDOB() + user.getPhone() + String.format("%1$-" + 30 + "s", user.getStreet()) + String.format("%1$-" + 30 + "s", user.getCity()) + user.getState() + accountStatus;
+		String result = String.valueOf(accountNumber) + user.getPin() + String.format("%1$-" + 15 + "s", String.valueOf(balance)) + String.format("%1$-" + 20 + "s", user.getLastName()) + String.format("%1$-" + 15 + "s", user.getFirstName()) + user.getDOB() + user.getPhone() + String.format("%1$-" + 30 + "s", user.getStreet()) + String.format("%1$-" + 30 + "s", user.getCity()) + user.getState() + user.getZipCode() + accountStatus;
 		return result;
 	}
 	

@@ -13,18 +13,18 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String pin;
-	private String DOB;
+	private String dob;
 	private String phone;
 	private String street;
 	private String city;
 	private String state;
 	private String zipCode;
 	
-	public User(String firstName, String lastName, String pin, String DOB, String phone, String street, String city, String state, String zipCode) {
+	public User(String firstName, String lastName, String pin, String dob, String phone, String street, String city, String state, String zipCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.pin = pin;
-		this.DOB = DOB;
+		this.dob = dob;
 		this.phone = phone;
 		this.street = street;
 		this.city = city;
@@ -45,8 +45,8 @@ public class User {
 		return pin;
 	}
 	
-	public String getDOB() {
-		return DOB;
+	public String getDob() {
+		return dob;
 	}
 	
 	public String getPhone() {

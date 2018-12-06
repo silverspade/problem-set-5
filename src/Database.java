@@ -22,7 +22,6 @@ public class Database {
 	
 	private String path;
 	private String[] accounts;
-	private static long generatedAccountNumber = 100000009L;
 	
 	public Database(String path) throws FileNotFoundException, IOException {
 		this.path = path;
