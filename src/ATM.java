@@ -27,54 +27,10 @@ public class ATM {
 			while (response != 3) {
 				switch (response) {
 				case 1: //Open Account
-					Scanner in4 = new Scanner(System.in);
-					System.out.println("Press 1 to open a new account, or 2 to reopen an existing one:");
-					int openAcct = in4.nextInt();
-					if (openAcct == 1) {
-						String line = createAccount();
-						BankAccount result = new BankAccount(line);
-						System.out.println("Creation successful.");
-						data.updateAccount(result, null);
-						System.out.println("Updating successful.");
-						System.out.println("Your account number is : " + result.getAccountNumber() + "\nYour PIN is: " + result.getUser().getPin());
-						in4.close();
-						break;
-					} else {
-						System.out.println("Please enter your account number: ");
-						long numb = in4.nextLong();
-						if (data.accountExists(numb) == null) {
-							System.out.println("Invalid account number. Please try again.");
-							in4.close();
-							break;
-						}
-						BankAccount reopen = data.accountExists(numb);
-						reopen.setAccountStatus('Y');
-						System.out.println("Reopening successful.");
-						data.updateAccount(reopen, null);
-						System.out.println("Update successful.");
-						in4.close();
-						break;
-					}
-					
+					openCreate(data);
+					break;
 				case 2: //Login
-					Scanner in5 = new Scanner(System.in);
-					System.out.println("Please enter your account number: ");
-					long num = in5.nextLong();
-					if (data.getAccount(num) == null) {
-						System.out.println("Invalid account number. Please try again.");
-						in5.close();
-						break;
-					}
-					BankAccount main = data.getAccount(num);
-					System.out.println("Enter your PIN");
-					String input = in5.nextLine();
-					if (input != main.getUser().getPin()) {
-						System.out.println("Incorrect PIN. Please try again.");
-						in5.close();
-						break;
-					}
-					submenu(main, data);
-					in5.close();
+					login(data);
 					break;
 				default:
 					System.out.println("Invalid number. Please try again.");
@@ -282,5 +238,57 @@ public class ATM {
 		in2.close();
 		String line = String.format("%-9s", accountNumber) + String.format("%-4s", pin) + String.format("%-15f", balance) + String.format("%-20s", lastName) + String.format("%-15s", firstName) + String.format("%-8s", dob) + String.format("%-10s", phone) + String.format("%-30s", street) + String.format("%-30s", city) + String.format("%-2s", state) + String.format("%-5s", zipCode) + accountStatus;
 		return line;
+	}
+	
+	public static void openCreate(Database data) {
+		try {
+			Scanner in4 = new Scanner(System.in);
+			System.out.println("Press 1 to open a new account, or 2 to reopen an existing one:");
+			int openAcct = in4.nextInt();
+			if (openAcct == 1) {
+				String line = createAccount();
+				BankAccount result = new BankAccount(line);
+				System.out.println("Creation successful.");
+				data.updateAccount(result, null);
+				System.out.println("Updating successful.");
+				System.out.println("Your account number is : " + result.getAccountNumber() + "\nYour PIN is: " + result.getUser().getPin());
+				in4.close();
+			} else {
+				System.out.println("Please enter your account number: ");
+				long numb = in4.nextLong();
+				if (data.accountExists(numb) == null) {
+					System.out.println("Invalid account number. Please try again.");
+					in4.close();
+				}
+				BankAccount reopen = data.accountExists(numb);
+				reopen.setAccountStatus('Y');
+				System.out.println("Reopening successful.");
+				data.updateAccount(reopen, null);
+				System.out.println("Update successful.");
+				in4.close();
+			}
+		}
+		catch (IOException ex ) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void login(Database data) {
+		Scanner in5 = new Scanner(System.in);
+		System.out.println("Please enter your account number: ");
+		long num = in5.nextLong();
+		if (data.getAccount(num) == null) {
+			System.out.println("Invalid account number. Please try again.");
+			in5.close();
+		}
+		BankAccount main = data.getAccount(num);
+		System.out.println("Enter your PIN");
+		String input = in5.nextLine();
+		if (input != main.getUser().getPin()) {
+			System.out.println("Incorrect PIN. Please try again.");
+			in5.close();
+		}
+		submenu(main, data);
+		in5.close();
 	}
 }
