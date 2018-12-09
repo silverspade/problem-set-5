@@ -23,7 +23,7 @@ public class BankAccount {
 		this.accountNumber = Long.valueOf(temp);
 		temp = line.substring(13, 28);
 		this.balance = Double.valueOf(temp);
-		this.user = new User(line.substring(28, 48), line.substring(48, 63), line.substring(9, 13), line.substring(63, 71), line.substring(71, 81), line.substring(81, 111), line.substring(111, 141), line.substring(141, 143), line.substring(143, 148));
+		this.user = new User(line.substring(48, 63),line.substring(28, 48), line.substring(9, 13), line.substring(63, 71), line.substring(71, 81), line.substring(81, 111), line.substring(111, 141), line.substring(141, 143), line.substring(143, 148));
 		this.accountStatus = line.charAt(148);
 	}
 	
