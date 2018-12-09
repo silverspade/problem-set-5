@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 /**
  * Just like last time, the BankAccount class is primarily responsible
@@ -58,24 +59,29 @@ public class BankAccount {
 	}
 	
 	public int transfer (BankAccount bankActDest, double amount, Database data) {
-		long actNum = bankActDest.accountNumber;
-		if (data.getAccount(actNum) == null) {
-			return 0;
-		} else if (amount <= 0.00) {
+		try {
+			if (amount <= 0.00) {
+				return 0;
+			} else if (amount > this.balance) {
+				return -1;
+			} else {
+				double newAmt = bankActDest.getBalance() + amount;
+				bankActDest.setBalance(newAmt);
+				this.balance = balance - amount;
+				data.updateAccount(bankActDest, null);
+				return 1;
+			}
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
 			return -2;
-		} else if (amount > this.balance) {
-			return -3;
-		} else {
-			bankActDest.setBalance(bankActDest.getBalance() + amount);
-			this.balance = balance - amount;
-			return 1;
 		}
 	}
 	
 	
 	
 	public String toString() {
-		String result = String.valueOf(accountNumber) + user.getPin() + String.format("%1$-" + 15 + "s", String.valueOf(balance)) + String.format("%1$-" + 20 + "s", user.getLastName()) + String.format("%1$-" + 15 + "s", user.getFirstName()) + user.getDob() + user.getPhone() + String.format("%1$-" + 30 + "s", user.getStreet()) + String.format("%1$-" + 30 + "s", user.getCity()) + user.getState() + user.getZipCode() + accountStatus;
+		String result = String.format("%-9s", accountNumber) + String.format("%-4s", user.getPin()) + String.format("%-15.2f", balance) + String.format("%-20s", user.getLastName()) + String.format("%-15s", user.getFirstName()) + String.format("%-8s", user.getDob()) + String.format("%-10s", user.getPhone()) + String.format("%-30s", user.getStreet()) + String.format("%-30s", user.getCity()) + String.format("%-2s", user.getState()) + String.format("%-5s", user.getZipCode()) + accountStatus;
 		return result;
 	}
 	
