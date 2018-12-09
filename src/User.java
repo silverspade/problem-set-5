@@ -70,15 +70,12 @@ public class User {
 	}
 	
 	//setters 6 have them; DOB, first, and last don't
-	public void setPIN(String oldPin, String newPin) {
-		if (oldPin == getPin()) {
-			if (newPin.matches("\\d\\d\\d\\d")) {
-				this.pin = newPin;
-			} else {
-				System.out.println("PIN change unsuccessful. Enter a valid newPIN.");
-			}
+	public int setPIN(String newPin) {
+		if (newPin.matches("\\d\\d\\d\\d")) {
+			this.pin = newPin;
+			return 1;
 		} else {
-			System.out.println("PIN change unsuccessful. Please enter the old PIN first.");
+			return 0;
 		}
 	}
 	

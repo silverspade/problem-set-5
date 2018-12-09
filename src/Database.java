@@ -77,6 +77,16 @@ public class Database {
 		return null;
 	}
 	
+	public BankAccount accountExists(long accountNumber) {
+		for (String account : accounts) {
+			if (account.startsWith(String.valueOf(accountNumber))) {
+				return new BankAccount(account);
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Updates a BankAccount.
 	 * 
